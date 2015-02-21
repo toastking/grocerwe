@@ -68,7 +68,7 @@ if ('development' == app.get('env')) {
 
 //render the todo list
 app.get('/', function(req, res){
-  res.render('index', { title: TaskList.name, tasks: TaskList.tasks});
+  res.render('index', { title: TaskList.name, tasks: taskList.find()});
 });
 
 //get input from the text box on the web page
@@ -82,7 +82,10 @@ app.post('/',function(req,res){
 	}else{
 		console.log(newTask.text);
 	}
-	}); 
+	});
+
+	//now add it to the array of the tasklist
+	taskList.tasks.push(newTask);
 });
 
 app.get('/users', user.list);
