@@ -9,6 +9,7 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 var mongoose = require("mongoose"); //load the mongoose database
+var bodyParser = require('body-parser');
 var Schema = mongoose.Schema;
 
 mongoose.connect('mongodb://localhost/test'); //connect to a local database
@@ -43,6 +44,11 @@ var grocery = new Task({
 	checked: false
 });
 
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
 grocery.echo(); //print out the text
 
 var app = express();
@@ -67,6 +73,7 @@ if ('development' == app.get('env')) {
 app.get('/', function(req, res){
   res.render('index', { title: grocery.echo() });
 });
+
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
