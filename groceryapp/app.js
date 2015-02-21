@@ -42,11 +42,8 @@ taskListSchema.methods.getTasks = function(){
 //now define our models
 var TaskList = mongoose.model('TaskList',taskListSchema);
 var Task = mongoose.model('Task',taskSchema);
-var taskList = new TaskList({name: "Groceries", tasks: ["sample1","sample2","sample3"]});
+var taskList = new TaskList({name: "Groceries", tasks: [new Task({text: "Milk", checked:false})]});
 
-for(var i in taskList.getTasks()){
-	console.log(i);
-}
 
 var app = express();
 
@@ -78,7 +75,7 @@ app.get('/', function(req, res){
 });
 
 //get input from the text box on the web page
-/*app.post('/',function(req,res){
+app.post('/',function(req,res){
 	var newTask = new Task({text: req.body.todo, checked: false }); //create a new document
 
 //save it to the server
@@ -92,7 +89,7 @@ app.get('/', function(req, res){
 
 	//now add it to the array of the tasklist
 	taskList.tasks.push(newTask);
-});*/
+});
 
 app.get('/users', user.list);
 
