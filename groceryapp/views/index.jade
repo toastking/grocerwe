@@ -1,14 +1,14 @@
 doctype html
 html(lang="en")
 	head
-		title= #{title}
+		title= title
 	body
 		h1 To Do List
 		#header
 			input#form(type='text' placeholder = 'What would you like to do?' name='todo')
 			input#btn(type='button' value = 'submit')
 		#table
-			ol #list
-			each val in #{tasks}
-				li val.text
+			ol#list
+			each val in taskslist
+				li #{val}
 				
