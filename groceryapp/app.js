@@ -71,7 +71,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res){
-  res.render('index', { title: grocery.echo() });
+  res.render('index', { title: grocery.echo(), tasks: ["sample1","sample2"."sample3"] });
 });
 
 app.get('/users', user.list);
