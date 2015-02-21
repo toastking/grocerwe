@@ -11,18 +11,40 @@ var path = require('path');
 var mongoose = require("mongoose"); //load the mongoose database
 var Schema = mongoose.Schema;
 
+mongoose.connect('mongodb://localhost/test'); //connect to a local database
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function (callback) {
+  // yay!
+});
+
 //define the schemas
 var taskSchema = new Schema({
 	text: String,
 	checked: Boolean
 });
 
+taskSchema.methods.echo = function() {
+	console.log(this.text);
+	return this.text;
+};
+
 var taskListSchema = new Schema({
 	name: String,
 	tasks: Array
 });
 
-var taskList = 
+//now define our models
+var TaskList = mongoose.model('TaskList',taskListSchema);
+var Task = mongoose.model('Task',taskSchema);
+
+var grocery = new Task({
+	text: "Milk",
+	checked: false
+});
+
+grocery.echo(); //print out the text
+
 var app = express();
 
 // all environments

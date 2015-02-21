@@ -4,6 +4,6 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
-  red.end('Hello World!');
+  res.render('index', { title: 'lolol' });
+  res.end('Hello World!');
 };
