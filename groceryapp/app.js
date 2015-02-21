@@ -37,19 +37,9 @@ var taskListSchema = new Schema({
 
 //now define our models
 var TaskList = mongoose.model('TaskList',taskListSchema);
-var Task = mongoose.model('Task',taskSchema);
+TaskList.name = "Groceries"; //name the task list 
+TaskList.tasks = ["sample1","sample2","sample3"]; //initialize the task array
 
-var grocery = new Task({
-	text: "Milk",
-	checked: false
-});
-
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));
-
-grocery.echo(); //print out the text
 
 var app = express();
 
@@ -64,14 +54,25 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+//render the todo list
 app.get('/', function(req, res){
-  res.render('index', { title: grocery.echo(), tasks: ["sample1","sample2"."sample3"] });
+  res.render('index', { title: TaskList.name, tasks: TaskList.tasks});
+});
+
+//get input from the text box on the web page
+app.post('/',function(req,res){
+
 });
 
 app.get('/users', user.list);
