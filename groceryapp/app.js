@@ -82,12 +82,11 @@ app.get('/', function(req, res){
 //make a new list
 app.post('/new-list', function(req,res){
 	var taskList = new TaskList({name: req.body.listName , tasks: [new Task({text: "Milk", checked:false, createdBy: "noob"})]});
-	taskList.save(function(err,taskList){
+	taskList.save(function(err){
 if(err) {
 		return console.err(err); //print out the error
-	}else{
-		console.log("task list synced!");
 	}
+		console.log('/'+req.body.listName + "task list synced!");
 	});
 	res.redirect('/'+req.body.listName);
 });
@@ -97,7 +96,7 @@ app.post('/new-task',function(req,res){
 	var newTask = new Task({text: req.body.todo, checked: false }); //create a new document
 
 //save it to the server
-	newTask.save(function(err,newTask){
+	newTask.save(function(err){
 		if(err) {
 		return console.err(err); //print out the error
 	}else{
@@ -118,7 +117,7 @@ if(err) {
 });
 
 app.get('/:name',function(req,res){
-	var taskslist = TaskList.findOne({'name' : req.param('name')}, 'tasks', function (err, taskList) {
+	var taskslist = TaskList.findOne({name: req.param('name')}, 'tasks', function (err, taskList) {
   if (err) return console.error(err);
 });
 
