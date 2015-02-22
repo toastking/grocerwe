@@ -1,8 +1,17 @@
 doctype html
+
+
 html(lang="en")
 	head
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css", rel="stylesheet")
+		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js")
 		title= "Create a list"
-	body
-		form(action = 'new-list' method = 'post')
-			input#form(type='text' placeholder = 'What\'s the name of the list?' name='listName')
-			input#btn(type='submit' value = 'Submit')
+	body.bg
+		#main.container
+			form.form-inline(action = 'new-list' method = 'post')
+				.form-group
+					label(for = 'form') Create a New list 
+					input#form.form-control(type='text' placeholder = 'What\'s the name of the list?' name='listName')
+					input.btn.btn-default(type='submit' value = 'Submit')

@@ -1,16 +1,19 @@
 doctype html
 html(lang="en")
 	head
+		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css", rel="stylesheet")
+		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js")
 		title= title
-	body
+	body.bg
 		h1 #{listName}
 		#header
-		form(action = listName+'/new-task' method = 'post')
+		form.form-inline(action = listName+'/new-task' method = 'post')
 			input#form(type='text' placeholder = 'What is your name?' name='name')
 			input#form(type='text' placeholder = 'What would you like to do?' name='todo')
-			input#btn(type='submit' value = 'Submit')
+			input#btn.btn.btn-sucess(type='submit' value = 'Submit')
 		#table
 			ol#list
 			each val in taskslist
-				li #{val.text} (Created by #{val.createdBy}
+				li.task #{val.text} 
+				span.label.label-default Created by #{val.createdBy}
 				
