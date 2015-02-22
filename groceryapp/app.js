@@ -75,7 +75,7 @@ app.get('/', function(req, res){
 });
 
 //get input from the text box on the web page
-app.post('/',function(req,res){
+app.post('/new-task',function(req,res){
 	var newTask = new Task({text: req.body.todo, checked: false }); //create a new document
 
 //save it to the server
@@ -89,6 +89,14 @@ app.post('/',function(req,res){
 
 	//now add it to the array of the tasklist
 	taskList.tasks.push(newTask);
+	taskList.save(function(err,taskList){
+if(err) {
+		return console.err(err); //print out the error
+	}else{
+		console.log("task list synced!");
+	}
+	});
+	res.end();
 });
 
 app.get('/users', user.list);
