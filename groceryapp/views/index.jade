@@ -2,18 +2,22 @@ doctype html
 html(lang="en")
 	head
 		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css", rel="stylesheet")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
 		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js")
+		link(rel='stylesheet', href='/stylesheets/list.css')
 		title= title
 	body.bg
-		h1 #{listName}
-		#header
-		form.form-inline(action = listName+'/new-task' method = 'post')
-			input#form(type='text' placeholder = 'What is your name?' name='name')
-			input#form(type='text' placeholder = 'What would you like to do?' name='todo')
-			input#btn.btn.btn-sucess(type='submit' value = 'Submit')
-		#table
-			ol#list
-			each val in taskslist
-				li.task #{val.text} 
-				span.label.label-default Created by #{val.createdBy}
-				
+		.container
+			h1 #{listName}
+			#header
+			form.form-inline(action = listName+'/new-task' method = 'post')
+				input#form(type='text' placeholder = 'What is your name?' name='name')
+				input#form(type='text' placeholder = 'What would you like to do?' name='todo')
+				input#btn.btn.btn-sucess(type='submit' value = 'Submit')
+			#table
+				ol#list
+				each val in taskslist
+					.list-item
+						li.task #{val.text} 
+						span.label.label-default Created by #{val.createdBy}
+					

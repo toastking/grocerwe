@@ -43,7 +43,7 @@ taskListSchema.methods.getTasks = function(){
 
 //define a list of task lists
 var allListSchema = new Schema({
-	lists: Array
+	list: Array
 });
 
 //now define our models
@@ -51,6 +51,12 @@ var TaskList = mongoose.model('TaskList',taskListSchema);
 var Task = mongoose.model('Task',taskSchema);
 
 var app = express();
+
+//initalize the lists of tasklists
+for(var tList in TaskList.find()){
+	lists[tList.name] = tList;
+}
+
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -91,6 +97,24 @@ if(err) {
 	});
 
 	lists[req.body.listName] = taskList;
+	/*
+	allList.list = lists;
+
+	allList.save(function(err,allList){
+		if(err) {
+		return console.err(err); //print out the error
+	}else{
+	}
+	});*/
+
+	//save the link so we can send it to someone laster
+	taskList.save(function(err,taskList){
+if(err) {
+		return console.err(err); //print out the error
+	}else{
+		console.log("task list synced!");
+	}
+	});
 	res.redirect('/'+req.body.listName);
 });
 
@@ -99,13 +123,6 @@ app.post('/:name/new-task',function(req,res){
 	var newTask = new Task({text: req.body.todo, checked: false,createdBy: req.body.name }); //create a new document
 
 //save it to the server
-	newTask.save(function(err,newTask){
-		if(err) {
-		return console.err(err); //print out the error
-	}else{
-		console.log(newTask.text);
-	}
-	});
 
 	var tList = lists[req.param('name')];
 
