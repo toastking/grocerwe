@@ -11,6 +11,7 @@ var path = require('path');
 var mongoose = require("mongoose"); //load the mongoose database
 var bodyParser = require('body-parser');
 var Schema = mongoose.Schema;
+var lists = {}; //hash table with the task lists in it
 
 mongoose.connect('mongodb://localhost/test'); //connect to a local database
 var db = mongoose.connection;
@@ -88,15 +89,17 @@ if(err) {
 	}
 		console.log('/'+req.body.listName + "task list synced!");
 	});
+
+	lists[req.body.listName] = taskList;
 	res.redirect('/'+req.body.listName);
 });
 
 //get input from the text box on the web page
-app.post('/new-task',function(req,res){
-	var newTask = new Task({text: req.body.todo, checked: false }); //create a new document
+app.post('/:name/new-task',function(req,res){
+	var newTask = new Task({text: req.body.todo, checked: false,createdBy: req.body.name }); //create a new document
 
 //save it to the server
-	newTask.save(function(err){
+	newTask.save(function(err,newTask){
 		if(err) {
 		return console.err(err); //print out the error
 	}else{
@@ -104,29 +107,29 @@ app.post('/new-task',function(req,res){
 	}
 	});
 
+	var tList = lists[req.param('name')];
+
 	//now add it to the array of the tasklist
-	taskList.tasks.push(newTask);
-	taskList.save(function(err,taskList){
+	tList.tasks.push(newTask);
+	tList.save(function(err,taskList){
 if(err) {
 		return console.err(err); //print out the error
 	}else{
 		console.log("task list synced!");
 	}
 	});
-	res.redirect('/'+taskList.name); //redirect it to the list
+	res.redirect('/'+tList.name); //redirect it to the list
 });
 
 app.get('/:name',function(req,res){
-	var taskslist = TaskList.findOne({name: req.param('name')}, 'tasks', function (err, taskList) {
-  if (err) return console.error(err);
-});
+	var taskslist = lists[req.param('name')];
 
 	for(var i in taskslist){
 		console.log(i);
 	}
 
 	if(taskslist !== null){
-	res.render('index',{"listName": req.param('name'),"taskslist": taskslist});
+	res.render('index',{"listName": req.param('name'),"taskslist": taskslist.tasks});
 }
 });
 

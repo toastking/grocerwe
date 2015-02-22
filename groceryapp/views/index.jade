@@ -5,12 +5,12 @@ html(lang="en")
 	body
 		h1 #{listName}
 		#header
-		form(action = 'new-task' method = 'post')
+		form(action = listName+'/new-task' method = 'post')
 			input#form(type='text' placeholder = 'What is your name?' name='name')
 			input#form(type='text' placeholder = 'What would you like to do?' name='todo')
 			input#btn(type='submit' value = 'Submit')
 		#table
 			ol#list
 			each val in taskslist
-				li #{val.text}
+				li #{val.text} (Created by #{val.createdBy}
 				
