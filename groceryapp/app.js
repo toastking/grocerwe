@@ -96,7 +96,7 @@ if(err) {
 		console.log("task list synced!");
 	}
 	});
-	res.end();
+	res.redirect('/');
 });
 
 app.get('/users', user.list);
