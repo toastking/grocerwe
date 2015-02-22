@@ -22,7 +22,8 @@ db.once('open', function (callback) {
 //define the schemas
 var taskSchema = new Schema({
 	text: String,
-	checked: Boolean
+	checked: Boolean,
+	createdBy: String
 });
 
 taskSchema.methods.echo = function() {
@@ -39,11 +40,14 @@ taskListSchema.methods.getTasks = function(){
 	return this.tasks;
 };
 
+//define a list of task lists
+var allListSchema = new Schema({
+	lists: Array
+});
+
 //now define our models
 var TaskList = mongoose.model('TaskList',taskListSchema);
 var Task = mongoose.model('Task',taskSchema);
-var taskList = new TaskList({name: "Groceries", tasks: [new Task({text: "Milk", checked:false})]});
-
 
 var app = express();
 
@@ -71,7 +75,21 @@ if ('development' == app.get('env')) {
 
 //render the todo list
 app.get('/', function(req, res){
-  res.render('index', {"title": TaskList.name, "taskslist": taskList.getTasks()});
+	//load the new form page
+	res.render('splash');
+});
+
+//make a new list
+app.post('/new-list', function(req,res){
+	var taskList = new TaskList({name: req.body.listName , tasks: [new Task({text: "Milk", checked:false, createdBy: "noob"})]});
+	taskList.save(function(err,taskList){
+if(err) {
+		return console.err(err); //print out the error
+	}else{
+		console.log("task list synced!");
+	}
+	});
+	res.redirect('/'+req.body.listName);
 });
 
 //get input from the text box on the web page
@@ -96,10 +114,24 @@ if(err) {
 		console.log("task list synced!");
 	}
 	});
-	res.redirect('/');
+	res.redirect('/'+taskList.name); //redirect it to the list
 });
 
-app.get('/users', user.list);
+app.get('/:name',function(req,res){
+	var taskslist = TaskList.findOne({'name' : req.param('name')}, 'tasks', function (err, taskList) {
+  if (err) return console.error(err);
+});
+
+	for(var i in taskslist){
+		console.log(i);
+	}
+
+	if(taskslist !== null){
+	res.render('index',{"listName": req.param('name'),"taskslist": taskslist});
+}
+});
+
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

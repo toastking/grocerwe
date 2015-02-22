@@ -1,0 +1,8 @@
+doctype html
+html(lang="en")
+	head
+		title= "Create a list"
+	body
+		form(action = 'new-list' method = 'post')
+			input#form(type='text' placeholder = 'What\'s the name of the list?' name='listName')
+			input#btn(type='submit' value = 'Submit')

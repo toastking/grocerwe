@@ -3,13 +3,14 @@ html(lang="en")
 	head
 		title= title
 	body
-		h1 To Do List
+		h1 #{listName}
 		#header
 		form(action = 'new-task' method = 'post')
+			input#form(type='text' placeholder = 'What is your name?' name='name')
 			input#form(type='text' placeholder = 'What would you like to do?' name='todo')
 			input#btn(type='submit' value = 'Submit')
 		#table
 			ol#list
 			each val in taskslist
-				li #{val.text}
+				li input#form(type='checkbox' name='val.text' checked = #{val.checked}) #{val.text}
 				
