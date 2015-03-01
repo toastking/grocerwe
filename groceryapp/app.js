@@ -97,15 +97,6 @@ if(err) {
 	});
 
 	lists[req.body.listName] = taskList;
-	/*
-	allList.list = lists;
-
-	allList.save(function(err,allList){
-		if(err) {
-		return console.err(err); //print out the error
-	}else{
-	}
-	});*/
 
 	//save the link so we can send it to someone laster
 	taskList.save(function(err,taskList){
@@ -151,6 +142,20 @@ app.get('/:name',function(req,res){
 });
 
 
+//get input from the checkboxes
+app.get('/task/:id',function(req,res){
+var tList = lists[req.param('name')];
+
+//find the task to delete using the id 
+Task.findById(req.params.id , function(err,task){
+
+	alert(task.text + "will be deleted!");
+	//remove the task from the database
+	task.remove(function(err,task){
+		res.redirect('/'+tList.name); //redirect it to the list
+	});
+});
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

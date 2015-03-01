@@ -18,6 +18,7 @@ html(lang="en")
 				ol#list
 				each val in taskslist
 					.list-item
+						a(href = "/task/" + val.id) Delete
 						li.task #{val.text} 
 						span.label.label-default Created by #{val.createdBy}
 					
